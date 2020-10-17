@@ -8,8 +8,8 @@ repos:
       args: [--max-line-length=88]
   - repo: local
     hooks:
-      - id: radon
-        name: radon
+      - id: xenon
+        name: xenon
         entry: run_xenon.sh
         language: script
         types: [python]

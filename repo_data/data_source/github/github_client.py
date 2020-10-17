@@ -3,7 +3,7 @@ import os
 import httpx
 
 
-class Client:
+class GithubClient:
 
     async def get_user(self, username: str):
         token = os.environ['GITHUB_TOKEN']

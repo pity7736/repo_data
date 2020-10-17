@@ -1,6 +1,6 @@
 from pytest import mark
 
-from repo_data.controllers import GetUserData
+from repo_data.controllers import GetUserDataFromDataSource
 
 
 username_values = (
@@ -22,7 +22,7 @@ username_values = (
 @mark.parametrize('username, result_data', username_values)
 @mark.asyncio
 async def test_get_user_data(username, result_data):
-    controller = GetUserData(username=username)
+    controller = GetUserDataFromDataSource(username=username)
     user_data = await controller.get()
 
     assert user_data.username == username

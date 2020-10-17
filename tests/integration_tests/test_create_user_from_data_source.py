@@ -1,6 +1,6 @@
 from pytest import mark
 
-from repo_data.controllers import CreateUser
+from repo_data.controllers import CreateUserFromDataSource
 from repo_data.models import User
 
 
@@ -22,8 +22,8 @@ username_values = (
 
 @mark.parametrize('username, result_data', username_values)
 @mark.asyncio
-async def test_create_user_data(db_connection, username, result_data):
-    controller = CreateUser(username=username)
+async def test_sucess(db_connection, username, result_data):
+    controller = CreateUserFromDataSource(username=username)
     created_user = await controller.create()
 
     user = await User.get(username=username)

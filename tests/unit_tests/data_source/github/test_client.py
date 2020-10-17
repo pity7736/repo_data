@@ -4,7 +4,7 @@ import httpx
 from httpx import Request
 from pytest import mark
 
-from repo_data.data_source.github.client import Client
+from repo_data.data_source.github.github_client import GithubClient
 
 
 exception_classes = (
@@ -28,7 +28,7 @@ async def test_request_error(mocker, exception_class):
     )
     get_user_mock.side_effect = exception_class('timeout error', request=request)
 
-    client = Client()
+    client = GithubClient()
     user_data = await client.get_user(username)
 
     assert user_data == {}
