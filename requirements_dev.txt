@@ -1,6 +1,5 @@
-pre-commit
-pytest
-pytest-cov
-radon
-sphinx
-sphinx-rtd-theme
+pre-commit==2.7.1
+pytest==6.1.1
+pytest-cov==2.10.1
+radon==4.3.2
+xenon==0.7.1

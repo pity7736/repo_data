@@ -9,7 +9,7 @@ repos:
     hooks:
       - id: radon
         name: radon
-        entry: run_radon.sh
+        entry: run_xenon.sh
         language: script
         types: [python]
   - repo: local
