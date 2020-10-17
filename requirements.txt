@@ -1,0 +1,2 @@
+asyncpg==0.21.0
+tortoise-orm==0.16.16
