@@ -14,8 +14,7 @@ from repo_data import init_db
 
 @fixture(scope='session')
 def event_loop():
-    loop = asyncio.get_event_loop()
-    return loop
+    return asyncio.get_event_loop()
 
 
 @fixture(scope='session')

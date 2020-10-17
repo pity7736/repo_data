@@ -1,3 +1,9 @@
 from collections import namedtuple
 
-UserData = namedtuple('UserData', ['username', 'name'])
+UserData = namedtuple(
+    'UserData',
+    [
+        'username',
+        'name',
+    ]
+)
