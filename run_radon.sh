@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-radon cc -a -s -nb repo_data
+radon cc -a -s repo_data

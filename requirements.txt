@@ -1,3 +1,4 @@
 asyncpg==0.21.0
 httpx==0.16.1
 tortoise-orm==0.16.16
+starlette==0.13.8
