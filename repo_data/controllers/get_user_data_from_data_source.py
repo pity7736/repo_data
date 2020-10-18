@@ -1,4 +1,4 @@
-from repo_data.data_source.github.get_user_data_from_github import GetUserDataFromGithub
+from repo_data.data_source.github.github_data_source import GithubDataSource
 
 
 class GetUserDataFromDataSource:
@@ -7,5 +7,5 @@ class GetUserDataFromDataSource:
         self._username = username
 
     async def get(self):
-        get_user_data = GetUserDataFromGithub(username=self._username)
-        return await get_user_data.get()
+        get_user_data = GithubDataSource(username=self._username)
+        return await get_user_data.get_user_data()

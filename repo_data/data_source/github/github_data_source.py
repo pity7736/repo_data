@@ -3,13 +3,13 @@ from repo_data.exceptions import DataSourceError
 from .github_client import GithubClient
 
 
-class GetUserDataFromGithub:
+class GithubDataSource:
 
     def __init__(self, username: str):
         self._username = username
         self._client = GithubClient()
 
-    async def get(self) -> UserData:
+    async def get_user_data(self) -> UserData:
         user_data = await self._client.get_user(username=self._username)
         if user_data:
             return UserData(
