@@ -2,7 +2,7 @@ from typing import Optional
 
 from repo_data.exceptions import DataSourceError
 from repo_data.models import User
-from .get_user_data_from_data_source import GetUserDataFromDataSource
+from .get_data_from_data_source import GetDataFromDataSource
 
 
 class CreateUserFromDataSource:
@@ -11,9 +11,9 @@ class CreateUserFromDataSource:
         self._username = username
 
     async def create(self) -> Optional[User]:
-        get_user_data = GetUserDataFromDataSource(username=self._username)
+        data_source = GetDataFromDataSource(username=self._username)
         try:
-            user_data = await get_user_data.get()
+            user_data = await data_source.get_user_data()
         except DataSourceError:
             return None
         else:
