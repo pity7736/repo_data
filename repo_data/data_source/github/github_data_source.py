@@ -19,14 +19,17 @@ class GithubDataSource:
             )
         raise DataSourceError('There was a mistake getting data from github')
 
-    async def get_repo_data(self, name):
+    async def get_repo_data(self, name: str) -> RepoData:
         repo_data = await self._client.get_repository(
             owner=self._username,
             name=name
         )
-        return RepoData(
-            name=name,
-            full_name=repo_data['full_name'],
-            description=repo_data['description'],
-            private=repo_data['private']
-        )
+        if repo_data:
+            return RepoData(
+                name=name,
+                full_name=repo_data['full_name'],
+                description=repo_data['description'],
+                private=repo_data['private']
+            )
+
+        raise DataSourceError('There was a mistake getting data from github')
