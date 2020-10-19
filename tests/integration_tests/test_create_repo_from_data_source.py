@@ -5,13 +5,12 @@ from repo_data.models import User, Repository
 
 
 @mark.asyncio
-async def test_create_repo_with_existent_user(db_connection):
-    user = await User.create(username='pity7736', name='julián')
-    controller = CreateRepoFromDataSource(owner_username='pity7736')
+async def test_create_repo_with_existent_user(user_fixture: User):
+    controller = CreateRepoFromDataSource(owner_username=user_fixture.username)
     await controller.create(name='nyoibo')
 
     repo = await Repository.get(name='nyoibo').prefetch_related('owner')
-    assert repo.owner == user
+    assert repo.owner == user_fixture
     assert repo.name == 'nyoibo'
 
 
@@ -22,23 +21,18 @@ async def test_create_repo_with_non_existent_user(db_connection):
     await controller.create(name='nyoibo')
 
     repo = await Repository.get(name='nyoibo').prefetch_related('owner')
-    assert repo.owner.username == username
     assert repo.name == 'nyoibo'
 
 
 @mark.asyncio
-async def test_create_repo_that_already_exists_in_db(db_connection):
-    username = 'pity7736'
-    repo_name = 'nyoibo'
-    user = await User.create(username=username, name='julián')
-    await Repository.create(name=repo_name, owner=user)
+async def test_create_repo_that_already_exists_in_db(repo_fixture: Repository):
+    owner = repo_fixture.owner
+    controller = CreateRepoFromDataSource(owner_username=owner.username)
+    await controller.create(name=repo_fixture.name)
 
-    controller = CreateRepoFromDataSource(owner_username=username)
-    await controller.create(name=repo_name)
-
-    repo = await Repository.get(name='nyoibo').prefetch_related('owner')
-    assert repo.owner.username == username
-    assert repo.name == 'nyoibo'
+    repo = await Repository.get(name=repo_fixture.name).prefetch_related('owner')
+    assert repo.owner.username == owner.username
+    assert repo.name == repo_fixture.name
 
 
 @mark.asyncio

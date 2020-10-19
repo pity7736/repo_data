@@ -10,6 +10,7 @@ from pytest import fixture
 from tortoise import Tortoise
 
 from repo_data import init_db
+from tests.factories import UserFactory, RepositoryFactory
 
 
 @fixture(scope='session')
@@ -58,3 +59,13 @@ async def db_connection(db_pool, mocker):
     release_mock.stop()
     print('releasing connection')
     await db_pool.release(connection)
+
+
+@fixture
+async def user_fixture(db_connection):
+    return await UserFactory.create()
+
+
+@fixture
+async def repo_fixture(user_fixture):
+    return await RepositoryFactory.create(owner=user_fixture)
