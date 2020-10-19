@@ -53,6 +53,6 @@ if __name__ == '__main__':
         asyncio.run(create_user(args.add_user))
     elif args.create_repo:
         asyncio.run(create_repo(*args.create_repo))
-
-    print('not argument given')
-    sys.exit(1)
+    else:
+        print('not argument given')
+        sys.exit(1)
