@@ -1,13 +1,4 @@
-from pytest import fixture
-from starlette.testclient import TestClient
-
-from repo_data.api import app
 from tests.factories import UserFactory
-
-
-@fixture
-def test_client():
-    return TestClient(app=app)
 
 
 def test_get_user(user_fixture, test_client):

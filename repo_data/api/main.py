@@ -2,7 +2,7 @@ from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Route, Mount
 
-from repo_data.api.app import api_routes
+from repo_data.api.views import api_routes
 
 
 async def hello_world(request):

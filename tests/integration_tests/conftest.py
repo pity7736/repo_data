@@ -7,9 +7,11 @@ from asyncpg import Connection
 from asyncpg.pool import Pool
 from asyncpg.transaction import Transaction
 from pytest import fixture
+from starlette.testclient import TestClient
 from tortoise import Tortoise
 
 from repo_data import init_db
+from repo_data.api import app
 from tests.factories import UserFactory, RepositoryFactory
 
 
@@ -69,3 +71,8 @@ async def user_fixture(db_connection):
 @fixture
 async def repo_fixture(user_fixture):
     return await RepositoryFactory.create(owner=user_fixture)
+
+
+@fixture
+def test_client():
+    return TestClient(app=app)
