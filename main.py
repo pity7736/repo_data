@@ -50,7 +50,7 @@ if __name__ == '__main__':
     if args.run:
         run()
     elif args.create_user:
-        asyncio.run(create_user(args.add_user))
+        asyncio.run(create_user(args.create_user))
     elif args.create_repo:
         asyncio.run(create_repo(*args.create_repo))
     else:
