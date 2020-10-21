@@ -9,7 +9,7 @@ services:
       - "8000:8000"
     env_file:
       - .env
-    command: sh /code/run_service.sh
+    command: sh /code/run.sh api_web
     depends_on:
       - db
 

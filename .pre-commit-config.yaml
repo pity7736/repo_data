@@ -10,13 +10,13 @@ repos:
     hooks:
       - id: xenon
         name: xenon
-        entry: run_xenon.sh
+        entry: run.sh xenon
         language: script
         types: [python]
   - repo: local
     hooks:
       - id: test
         name: tests
-        entry: run_tests.sh
+        entry: run.sh tests
         language: script
         types: [python]
