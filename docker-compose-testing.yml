@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  repo_data:
+    image: repo_data_testing
+    build:
+      target: testing
+    volumes:
+      - .:/code/
+    ports:
+      - "0:8000"
+
+  db:
+    ports:
+      - "0:5432"

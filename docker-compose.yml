@@ -1,28 +1,22 @@
-version: '3'
+version: '3.7'
 services:
   repo_data:
-    restart: always
-    image: repo_data
-    container_name: repo_data_container
+    image: repo_data_web
     build:
       context: .
-      dockerfile: Dockerfile
+      target: web
     ports:
       - "8000:8000"
     env_file:
       - .env
     command: sh /code/run_service.sh
-    volumes:
-      - .:/code/
     depends_on:
       - db
 
   db:
     image: postgres:12
-    container_name: repo_data_db
     volumes:
       - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
-      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
       - "dbdata:/var/lib/postgresql/data"
     ports:
       - 5431:5432
