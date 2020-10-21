@@ -1,5 +1,4 @@
 import asyncio
-import os
 from unittest.mock import AsyncMock, patch
 
 import asyncpg
@@ -10,7 +9,7 @@ from pytest import fixture
 from starlette.testclient import TestClient
 from tortoise import Tortoise
 
-from repo_data import init_db
+from repo_data import init_db, settings
 from repo_data.api import app
 from tests.factories import UserFactory, RepositoryFactory
 
@@ -23,11 +22,11 @@ def event_loop():
 @fixture(scope='session')
 async def db_pool(session_mocker):
     pool: Pool = await asyncpg.create_pool(
-        host=os.environ['REPO_DATA_HOST'],
-        user=os.environ['REPO_DATA_USER'],
-        database=os.environ['REPO_DATA_DATABASE'],
-        password=os.environ['REPO_DATA_PASSWORD'],
-        port=int(os.environ['REPO_DATA_PORT']),
+        host=settings.REPO_DATA_HOST,
+        user=settings.REPO_DATA_USER,
+        database=settings.REPO_DATA_DATABASE,
+        password=settings.REPO_DATA_PASSWORD,
+        port=int(settings.REPO_DATA_PORT),
         min_size=2
     )
     print('pool created')

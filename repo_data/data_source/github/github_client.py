@@ -1,12 +1,12 @@
-import os
-
 import httpx
+
+from repo_data import settings
 
 
 class GithubClient:
 
     async def get_user(self, username: str):
-        token = os.environ['GITHUB_TOKEN']
+        token = settings.GITHUB_TOKEN
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
@@ -22,7 +22,7 @@ class GithubClient:
         return {}
 
     async def get_repository(self, owner, name):
-        token = os.environ['GITHUB_TOKEN']
+        token = settings.GITHUB_TOKEN
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(

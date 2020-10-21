@@ -8,6 +8,8 @@ services:
       - .:/code/
     ports:
       - "0:8000"
+    environment:
+      - APP_ENVIRONMENT=testing
 
   db:
     ports:

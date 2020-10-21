@@ -7,6 +7,8 @@ services:
       target: web
     ports:
       - "8000:8000"
+    environment:
+      - APP_ENVIRONMENT=dev
     env_file:
       - .env
     command: sh /code/run.sh api_web

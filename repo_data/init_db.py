@@ -1,6 +1,6 @@
-import os
-
 from tortoise import Tortoise
+
+from repo_data import settings
 
 
 async def init_db():
@@ -9,11 +9,11 @@ async def init_db():
             'default': {
                 'engine': 'tortoise.backends.asyncpg',
                 'credentials': {
-                    'host': os.environ['REPO_DATA_HOST'],
-                    'port': os.environ['REPO_DATA_PORT'],
-                    'user': os.environ['REPO_DATA_USER'],
-                    'password': os.environ['REPO_DATA_PASSWORD'],
-                    'database': os.environ['REPO_DATA_DATABASE'],
+                    'host': settings.REPO_DATA_HOST,
+                    'port': settings.REPO_DATA_PORT,
+                    'user': settings.REPO_DATA_USER,
+                    'password': settings.REPO_DATA_PASSWORD,
+                    'database': settings.REPO_DATA_DATABASE,
                 }
             }
         },
