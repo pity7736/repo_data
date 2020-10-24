@@ -12,7 +12,7 @@ async def test_connection_error(mocker):
     github_client_mock = mocker.patch.object(
         GithubClient,
         'get_user',
-        new_callabler=AsyncMock
+        new_callable=AsyncMock
     )
     github_client_mock.return_value = {}
     controller = GetDataFromDataSource(username='pity7736')

@@ -4,37 +4,25 @@ from repo_data import settings
 
 
 class GithubClient:
+    __slots__ = ()
     _token = settings.GITHUB_TOKEN
-    _instance = None
+    _base_url = 'https://api.github.com'
 
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._client = httpx.AsyncClient()
-        return cls._instance
+    def get_user(self, username: str):
+        return self._send_request(f'/users/{username}')
 
-    async def get_user(self, username: str):
+    def get_repository(self, owner, name):
+        return self._send_request(f'/repos/{owner}/{name}')
+
+    async def _send_request(self, resource):
         try:
-            response = await self._client.get(
-                f'https://api.github.com/users/{username}',
-                headers={
-                    'Authorization': f'token {self._token}'
-                }
-            )
-        except httpx.RequestError:
-            return {}
-        if response.status_code == 200:
-            return response.json()
-        return {}
-
-    async def get_repository(self, owner, name):
-        try:
-            response = await self._client.get(
-                f'https://api.github.com/repos/{owner}/{name}',
-                headers={
-                    'Authorization': f'token {self._token}'
-                }
-            )
+            async with httpx.AsyncClient() as client:
+                response = await client.get(
+                    f'{self._base_url}{resource}',
+                    headers={
+                        'Authorization': f'token {self._token}'
+                    }
+                )
         except httpx.RequestError:
             return {}
         if response.status_code == 200:
