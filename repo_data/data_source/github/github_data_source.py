@@ -1,3 +1,4 @@
+import asyncio
 from typing import List
 
 from repo_data.data_source.user_data import UserData
@@ -16,10 +17,10 @@ class GithubDataSource(DataSource):
     async def get_user_followers_data(self) -> List[UserData]:
         followers_data = await self._client.get_user_followers(username=self._username)
         if followers_data:
-            result = []
+            tasks = []
             for follower_data in followers_data:
-                result.append(await self.get_user_data(follower_data['login']))
-            return result
+                tasks.append(self.get_user_data(follower_data['login']))
+            return await asyncio.gather(*tasks)
         raise DataSourceError('There was a mistake getting data from github')
 
     async def get_user_data(self, username=None) -> UserData:

@@ -33,7 +33,7 @@ username_values = (
 async def test_success(db_connection, username, result_data):
     data_source = GithubDataSource(username=username)
     controller = CreateUserFromDataSource(data_source=data_source)
-    created_user = await controller.create()
+    created_user = await controller.create(create_followers=True)
 
     user = await User.get(username=username)
     followers_number = await user.followers.all().count()
