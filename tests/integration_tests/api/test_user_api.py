@@ -148,3 +148,53 @@ def test_search_by_non_existent_fields(test_client, event_loop, user_fixture):
             'message': 'users not found'
         }
     ]
+
+
+def test_get_user_followers(test_client, event_loop, user_fixture):
+    user0 = event_loop.run_until_complete(UserFactory.create(
+        username='qwerty',
+        name='qwerty'
+    ))
+    user1 = event_loop.run_until_complete(UserFactory.create(
+        username='john_doe',
+        name='john doe'
+    ))
+    event_loop.run_until_complete(user_fixture.followers.add(user0, user1))
+
+    response = test_client.get(
+        f'/api/users/{user_fixture.id}/followers',
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data['data'] == {
+        'followers': [
+            {
+                'id': user0.id,
+                'username': user0.username,
+                'name': user0.name
+            },
+            {
+                'id': user1.id,
+                'username': user1.username,
+                'name': user1.name
+            },
+        ]
+    }
+
+
+def test_get_user_followers_with_wrong_id(test_client, event_loop, user_fixture):
+    response = test_client.get(
+        '/api/users/123/followers',
+    )
+    data = response.json()
+
+    assert response.status_code == 404
+    assert data['data'] == {
+        'followers': []
+    }
+    assert data['errors'] == [
+        {
+            'message': 'user not found'
+        }
+    ]
