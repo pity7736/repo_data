@@ -14,13 +14,15 @@ username_values = (
     (
         'pity7736',
         {
-            'name': 'julián cortés'
+            'name': 'julián cortés',
+            'followers_number': 11
         }
     ),
     (
         'Danjavia',
         {
-            'name': 'danny hoower antonio viasus avila'
+            'name': 'danny hoower antonio viasus avila',
+            'followers_number': 9
         }
     )
 )
@@ -34,6 +36,8 @@ async def test_success(db_connection, username, result_data):
     created_user = await controller.create()
 
     user = await User.get(username=username)
+    followers_number = await user.followers.all().count()
     assert created_user == user
     assert user.username == username
     assert user.name == result_data['name']
+    assert followers_number == result_data['followers_number']

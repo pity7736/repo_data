@@ -40,6 +40,7 @@ async def test_get_non_existent_repo(client):
     assert user_data == {}
 
 
+@mark.skip(reason='request limited')
 @mark.asyncio
 async def test_make_request_without_token():
     settings.GITHUB_TOKEN = None
@@ -48,3 +49,9 @@ async def test_make_request_without_token():
 
     assert user_data['login'] == 'pity7736'
     assert user_data['name'] == 'Julián Cortés'
+
+
+@mark.asyncio
+async def test_get_user_followers(client):
+    user_followers_data = await client.get_user_followers('pity7736')
+    assert len(user_followers_data) == 11

@@ -18,4 +18,16 @@ class CreateUserFromDataSource:
         except DataSourceError:
             return None
         else:
-            return await User.create(username=user_data.username, name=user_data.name)
+            user = await User.create(username=user_data.username, name=user_data.name)
+            await self._create_followers(user)
+            return user
+
+    async def _create_followers(self, user):
+        followers_data = await self._data_source.get_user_followers_data()
+        followers = []
+        for follower_data in followers_data:
+            followers.append(await User.create(
+                username=follower_data.username,
+                name=follower_data.name
+            ))
+        await user.followers.add(*followers)
