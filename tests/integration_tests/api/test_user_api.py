@@ -124,9 +124,6 @@ def test_search_by_non_existent_field(test_client, event_loop, user_fixture):
     }
     assert data['errors'] == [
         {
-            'message': 'unknown_field is/are not valid field(s)'
-        },
-        {
             'message': 'users not found'
         }
     ]
@@ -147,9 +144,6 @@ def test_search_by_non_existent_fields(test_client, event_loop, user_fixture):
         'users': []
     }
     assert data['errors'] == [
-        {
-            'message': 'unknown_field0, unknown_field1 is/are not valid field(s)'
-        },
         {
             'message': 'users not found'
         }
