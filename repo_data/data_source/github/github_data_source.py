@@ -1,13 +1,14 @@
 from repo_data.data_source.user_data import UserData
 from repo_data.exceptions import DataSourceError
 from .github_client import GithubClient
+from ..data_source import DataSource
 from ..repo_data import RepoData
 
 
-class GithubDataSource:
+class GithubDataSource(DataSource):
 
     def __init__(self, username: str):
-        self._username = username
+        super().__init__(username)
         self._client = GithubClient()
 
     async def get_user_data(self) -> UserData:
