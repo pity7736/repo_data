@@ -55,3 +55,9 @@ async def test_make_request_without_token():
 async def test_get_user_followers(client):
     user_followers_data = await client.get_user_followers('pity7736')
     assert len(user_followers_data) == 11
+
+
+@mark.asyncio
+async def test_get_user_followings(client):
+    user_followings_data = await client.get_user_followings('pity7736')
+    assert len(user_followings_data) == 7

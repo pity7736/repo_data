@@ -23,6 +23,17 @@ class GithubDataSource(DataSource):
             return await asyncio.gather(*tasks)
         raise DataSourceError('There was a mistake getting data from github')
 
+    async def get_user_followings_data(self) -> List[UserData]:
+        followings_data = await self._client.get_user_followings(
+            username=self._username
+        )
+        if followings_data:
+            tasks = []
+            for following_data in followings_data:
+                tasks.append(self.get_user_data(username=following_data['login']))
+            return await asyncio.gather(*tasks)
+        raise DataSourceError('There was a mistake getting data from github')
+
     async def get_user_data(self, username=None) -> UserData:
         username = username or self._username
         user_data = await self._client.get_user(username=username)

@@ -25,3 +25,7 @@ class DataSource(metaclass=ABCMeta):
     @abstractmethod
     async def get_user_followers_data(self) -> List[UserData]:
         pass
+
+    @abstractmethod
+    async def get_user_followings_data(self) -> List[UserData]:
+        pass

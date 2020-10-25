@@ -22,6 +22,9 @@ class GithubClient:
     def get_user_followers(self, username: str):
         return self._send_request(f'/users/{username}/followers')
 
+    def get_user_followings(self, username: str):
+        return self._send_request(f'/users/{username}/following')
+
     async def _send_request(self, resource):
         try:
             async with httpx.AsyncClient() as client:

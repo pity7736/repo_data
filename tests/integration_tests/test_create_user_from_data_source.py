@@ -15,14 +15,16 @@ username_values = (
         'pity7736',
         {
             'name': 'julián cortés',
-            'followers_number': 11
+            'followers_number': 11,
+            'followings_number': 7
         }
     ),
     (
         'Danjavia',
         {
             'name': 'danny hoower antonio viasus avila',
-            'followers_number': 9
+            'followers_number': 9,
+            'followings_number': 15
         }
     )
 )
@@ -33,11 +35,16 @@ username_values = (
 async def test_success(db_connection, username, result_data):
     data_source = GithubDataSource(username=username)
     controller = CreateUserFromDataSource(data_source=data_source)
-    created_user = await controller.create(create_followers=True)
+    created_user = await controller.create(
+        create_followers=True,
+        create_followings=True
+    )
 
     user = await User.get(username=username)
     followers_number = await user.followers.all().count()
+    followings_number = await user.followings.all().count()
     assert created_user == user
     assert user.username == username
     assert user.name == result_data['name']
     assert followers_number == result_data['followers_number']
+    assert followings_number == result_data['followings_number']
