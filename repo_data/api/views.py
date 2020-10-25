@@ -145,10 +145,33 @@ async def get_user_followers(request):
     )
 
 
+async def get_user_followings(request):
+    user_id = request.path_params['id']
+    user = await User.get_or_none(id=user_id)
+    if user:
+        followings = await user.followings.all()
+        followings_data = UserSchema().dump(followings, many=True)
+        return JSONResponse({'data': {'followings': followings_data}})
+    return JSONResponse(
+        {
+            'data': {
+                'followings': []
+            },
+            'errors': [
+                {
+                    'message': 'user not found'
+                }
+            ]
+        },
+        status_code=404
+    )
+
+
 api_routes = [
     Route('/users', search_users),
     Route('/users/{id}', get_user),
     Route('/users/{id}/followers', get_user_followers),
+    Route('/users/{id}/followings', get_user_followings),
     Route('/repos', search_repos),
     Route('/repos/{id}', get_repo),
     Route('/repos/owner/{id}', get_repos_by_owner),

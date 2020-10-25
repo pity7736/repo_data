@@ -198,3 +198,53 @@ def test_get_user_followers_with_wrong_id(test_client, event_loop, user_fixture)
             'message': 'user not found'
         }
     ]
+
+
+def test_get_user_followingss(test_client, event_loop, user_fixture):
+    user0 = event_loop.run_until_complete(UserFactory.create(
+        username='qwerty',
+        name='qwerty'
+    ))
+    user1 = event_loop.run_until_complete(UserFactory.create(
+        username='john_doe',
+        name='john doe'
+    ))
+    event_loop.run_until_complete(user_fixture.followings.add(user0, user1))
+
+    response = test_client.get(
+        f'/api/users/{user_fixture.id}/followings',
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data['data'] == {
+        'followings': [
+            {
+                'id': user0.id,
+                'username': user0.username,
+                'name': user0.name
+            },
+            {
+                'id': user1.id,
+                'username': user1.username,
+                'name': user1.name
+            },
+        ]
+    }
+
+
+def test_get_user_followings_with_wrong_id(test_client, event_loop, user_fixture):
+    response = test_client.get(
+        '/api/users/123/followings',
+    )
+    data = response.json()
+
+    assert response.status_code == 404
+    assert data['data'] == {
+        'followings': []
+    }
+    assert data['errors'] == [
+        {
+            'message': 'user not found'
+        }
+    ]
