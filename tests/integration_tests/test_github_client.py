@@ -1,5 +1,6 @@
 from pytest import mark, fixture
 
+from repo_data import settings
 from repo_data.data_source.github.github_client import GithubClient
 
 
@@ -37,3 +38,13 @@ async def test_get_repo(client):
 async def test_get_non_existent_repo(client):
     user_data = await client.get_repository(owner='pitty7736', name='qwerty')
     assert user_data == {}
+
+
+@mark.asyncio
+async def test_make_request_without_token():
+    settings.GITHUB_TOKEN = None
+    client = GithubClient()
+    user_data = await client.get_user('pity7736')
+
+    assert user_data['login'] == 'pity7736'
+    assert user_data['name'] == 'Julián Cortés'

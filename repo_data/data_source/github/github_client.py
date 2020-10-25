@@ -4,9 +4,14 @@ from repo_data import settings
 
 
 class GithubClient:
-    __slots__ = ()
-    _token = settings.GITHUB_TOKEN
+    __slots__ = ('_headers',)
     _base_url = 'https://api.github.com'
+
+    def __init__(self):
+        headers = {}
+        if settings.GITHUB_TOKEN:
+            headers = {'Authorization': f'token {settings.GITHUB_TOKEN}'}
+        self._headers = headers
 
     def get_user(self, username: str):
         return self._send_request(f'/users/{username}')
@@ -19,9 +24,7 @@ class GithubClient:
             async with httpx.AsyncClient() as client:
                 response = await client.get(
                     f'{self._base_url}{resource}',
-                    headers={
-                        'Authorization': f'token {self._token}'
-                    }
+                    headers=self._headers
                 )
         except httpx.RequestError:
             return {}

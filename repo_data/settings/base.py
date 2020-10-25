@@ -1,6 +1,6 @@
 import os
 
-GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
 REPO_DATA_DATABASE = os.environ['REPO_DATA_DATABASE']
 REPO_DATA_HOST = os.environ['REPO_DATA_HOST']
 REPO_DATA_PASSWORD = os.environ['REPO_DATA_PASSWORD']

@@ -11,7 +11,8 @@ This going to:
 * Rename `env.sample` file to `.env`
 * Build docker images
 
-Then, set right variable values
+Then, set right variable values.
+GITHUB_TOKEN is optional but if you don't set, requests number are limited by github.
 
 Run API web
 -----------
