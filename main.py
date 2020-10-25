@@ -6,7 +6,7 @@ import uvicorn
 from dotenv import load_dotenv
 
 from repo_data import init_db
-from repo_data.controllers import CreateUserFromDataSource
+from repo_data.commands import CreateUser
 from repo_data.controllers.create_repo_from_data_source import CreateRepoFromDataSource
 
 
@@ -18,8 +18,8 @@ async def create_user(username):
     load_dotenv()
     await init_db()
     print('creating user with username', username)
-    controller = CreateUserFromDataSource(username=username)
-    await controller.create()
+    command = CreateUser(username=username, data_source='github')
+    await command.run()
 
 
 async def create_repo(owner, name):
