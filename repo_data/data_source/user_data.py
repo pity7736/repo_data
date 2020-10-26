@@ -5,5 +5,6 @@ UserData = namedtuple(
     [
         'username',
         'name',
+        'data_source_id'
     ]
 )

@@ -1,6 +1,6 @@
 import inspect
 
-from factory import Factory, SubFactory
+from factory import Factory, SubFactory, Sequence
 
 from repo_data.models import User, Repository
 
@@ -20,6 +20,7 @@ class CreateFactoryMixin:
 class UserFactory(CreateFactoryMixin, Factory):
     username = 'pity7736'
     name = 'julián cortés'
+    data_source_id = Sequence(lambda n: n)
 
     class Meta:
         model = User

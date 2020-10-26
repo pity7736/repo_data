@@ -16,7 +16,8 @@ username_values = (
         {
             'name': 'julián cortés',
             'followers_number': 11,
-            'followings_number': 7
+            'followings_number': 7,
+            'data_source_id': '4231101',
         }
     ),
     (
@@ -24,7 +25,8 @@ username_values = (
         {
             'name': 'danny hoower antonio viasus avila',
             'followers_number': 9,
-            'followings_number': 15
+            'followings_number': 15,
+            'data_source_id': '1041322',
         }
     )
 )
@@ -46,5 +48,6 @@ async def test_success(db_connection, username, result_data):
     assert created_user == user
     assert user.username == username
     assert user.name == result_data['name']
+    assert user.data_source_id == result_data['data_source_id']
     assert followers_number == result_data['followers_number']
     assert followings_number == result_data['followings_number']

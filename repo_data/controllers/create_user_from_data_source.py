@@ -1,10 +1,18 @@
 from typing import Optional
 
-from tortoise.exceptions import DoesNotExist
-
 from repo_data.exceptions import DataSourceError
 from repo_data.models import User
 from ..data_source.data_source import DataSource
+from ..data_source.user_data import UserData
+
+
+async def _create_user_from_user_data(user_data: UserData) -> User:
+    user, created = await User.get_or_create(
+        username=user_data.username,
+        name=user_data.name,
+        data_source_id=user_data.data_source_id
+    )
+    return user
 
 
 class CreateUserFromDataSource:
@@ -17,17 +25,11 @@ class CreateUserFromDataSource:
     async def create(self, create_followers=False,
                      create_followings=False) -> Optional[User]:
         try:
-            user = await User.get(username=self._data_source.username)
-        except DoesNotExist:
-            try:
-                user_data = await self._data_source.get_user_data()
-            except DataSourceError:
-                return None
-            else:
-                user = await User.create(
-                    username=user_data.username,
-                    name=user_data.name
-                )
+            user_data = await self._data_source.get_user_data()
+        except DataSourceError:
+            return None
+        else:
+            user = await _create_user_from_user_data(user_data=user_data)
         await self._create_followers(user, create_followers)
         await self._create_following(user, create_followings)
         return user
@@ -37,10 +39,7 @@ class CreateUserFromDataSource:
             followers_data = await self._data_source.get_user_followers_data()
             followers = []
             for follower_data in followers_data:
-                follower, created = await User.get_or_create(
-                    username=follower_data.username,
-                    name=follower_data.name
-                )
+                follower = await _create_user_from_user_data(user_data=follower_data)
                 followers.append(follower)
             await user.followers.add(*followers)
 
@@ -49,9 +48,6 @@ class CreateUserFromDataSource:
             followings_data = await self._data_source.get_user_followings_data()
             followings = []
             for following_data in followings_data:
-                following, created = await User.get_or_create(
-                    username=following_data.username,
-                    name=following_data.name
-                )
+                following = await _create_user_from_user_data(user_data=following_data)
                 followings.append(following)
             await user.followings.add(*followings)
