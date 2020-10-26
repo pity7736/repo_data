@@ -29,6 +29,55 @@ Make sure the container is not running.
 To run tests, you can run `sh run.sh tests_docker`
 
 
+Getting repository and user data
+--------------------------------
+
+There is a CLI tool to get data from data source. You need to have container running.
+You can do it running `docker-compose up`.
+To get help about tool you can run `sh run_command_on_container.sh -h`
+
+All following command are on `run_command_on_container.sh` file.
+
+#### Create user
+
+This command get user data from data source and stores in DB.
+
+    -cu username
+
+    or
+
+    -- create-user username
+
+To create followers too, you can add `-cfr` or `--create-followers` option.
+This going to get followers user and store in DB. Example:
+
+    -cu pity7736 -cfr
+
+Also, you can create followings adding `-cfg`  or `--create-followings` option.
+Example:
+
+    -cu pity7736 -cfg
+
+To create user, followers and followings, you can put all together. Example:
+
+    -cu pity736 -cfr -cfg
+
+
+#### Create repository
+
+This command get repository data from data source and stores in DB.
+
+    -cr owner repo_name
+
+    or
+
+    --create-repo owner repo_name
+
+Example:
+
+    -cr pity7736 nyoibo
+
+
 API Documentation
 -----------------
 
