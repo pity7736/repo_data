@@ -7,12 +7,11 @@ Installation
 Run `sh install.sh`.
 This going to:
 
-* Clone project
 * Rename `env.sample` file to `.env`
 * Rename `env.test.sample` file to `.env.test`
 * Build docker images
 
-Then, set right variable values.
+Optional, set right variable values (with sample variables should work fine).
 GITHUB_TOKEN is optional but if you don't set, requests number are limited by github.
 
 Run API web
@@ -46,7 +45,7 @@ This command get user data from data source and stores in DB.
 
     or
 
-    -- create-user username
+    --create-user username
 
 To create followers too, you can add `-cfr` or `--create-followers` option.
 This going to get followers user and store in DB. Example:
@@ -65,7 +64,7 @@ To create user, followers and followings, you can put all together. Example:
 
 #### Create repository
 
-This command get repository data from data source and stores in DB.
+This command get repository and owner data from data source and stores in DB.
 
     -cr owner repo_name
 
@@ -109,7 +108,7 @@ Response:
         }
     }
 
-##### filter users
+#### Filter users
 
 Resource: /users
 
