@@ -1,17 +1,26 @@
 from tests.factories import UserFactory
 
 
+def user_data(user):
+    return {
+        'id': user.id,
+        'username': user.username,
+        'name': user.name,
+        'company': user.company,
+        'blog': user.blog,
+        'location': user.location,
+        'email': user.email,
+        'bio': user.bio,
+    }
+
+
 def test_get_user(user_fixture, test_client):
     response = test_client.get(f'/api/users/{user_fixture.id}')
     data = response.json()
 
     assert response.status_code == 200
     assert data['data'] == {
-        'user': {
-            'id': user_fixture.id,
-            'username': user_fixture.username,
-            'name': user_fixture.name
-        }
+        'user': user_data(user_fixture)
     }
 
 
@@ -37,11 +46,7 @@ def test_search_users(test_client, event_loop, user_fixture):
     assert response.status_code == 200
     assert data['data'] == {
         'users': [
-            {
-                'id': user_fixture.id,
-                'username': user_fixture.username,
-                'name': user_fixture.name
-            }
+            user_data(user_fixture)
         ]
     }
 
@@ -57,11 +62,7 @@ def test_search_by_two_fields(test_client, event_loop, user_fixture):
     assert response.status_code == 200
     assert data['data'] == {
         'users': [
-            {
-                'id': user_fixture.id,
-                'username': user_fixture.username,
-                'name': user_fixture.name
-            }
+            user_data(user_fixture)
         ]
     }
 
@@ -97,16 +98,8 @@ def test_get_all_users(test_client, event_loop, db_connection):
     assert response.status_code == 200
     assert data['data'] == {
         'users': [
-            {
-                'id': user0.id,
-                'username': user0.username,
-                'name': user0.name
-            },
-            {
-                'id': user1.id,
-                'username': user1.username,
-                'name': user1.name
-            },
+            user_data(user0),
+            user_data(user1),
         ]
     }
 
@@ -169,16 +162,8 @@ def test_get_user_followers(test_client, event_loop, user_fixture):
     assert response.status_code == 200
     assert data['data'] == {
         'followers': [
-            {
-                'id': user0.id,
-                'username': user0.username,
-                'name': user0.name
-            },
-            {
-                'id': user1.id,
-                'username': user1.username,
-                'name': user1.name
-            },
+            user_data(user0),
+            user_data(user1)
         ]
     }
 
@@ -219,16 +204,8 @@ def test_get_user_followingss(test_client, event_loop, user_fixture):
     assert response.status_code == 200
     assert data['data'] == {
         'followings': [
-            {
-                'id': user0.id,
-                'username': user0.username,
-                'name': user0.name
-            },
-            {
-                'id': user1.id,
-                'username': user1.username,
-                'name': user1.name
-            },
+            user_data(user0),
+            user_data(user1)
         ]
     }
 

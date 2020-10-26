@@ -41,7 +41,12 @@ class GithubDataSource(DataSource):
             return UserData(
                 username=username,
                 name=user_data['name'].lower() if user_data['name'] else '',
-                data_source_id=user_data['id']
+                data_source_id=user_data['id'],
+                company=user_data['company'],
+                blog=user_data['blog'],
+                location=user_data['location'],
+                email=user_data['email'],
+                bio=user_data['bio'],
             )
         raise DataSourceError('There was a mistake getting data from github')
 

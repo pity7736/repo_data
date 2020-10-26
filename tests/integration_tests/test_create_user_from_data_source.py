@@ -13,6 +13,11 @@ username_values = (
             'followers_number': 11,
             'followings_number': 7,
             'data_source_id': '4231101',
+            "company": "R5",
+            "blog": "",
+            "location": "Bogotá D.C - Colombia",
+            "email": 'pity7736@gmail.com',
+            "bio": "I'm python backend developer at https://www.grupor5.com/"
         }
     ),
     (
@@ -22,6 +27,11 @@ username_values = (
             'followers_number': 9,
             'followings_number': 15,
             'data_source_id': '1041322',
+            "company": "StronGo Atrio Technologies, Inc",
+            "blog": "https://twitter.com/danjavia",
+            "location": "Bogota - Colombia",
+            "email": 'danjavia@gmail.com',
+            "bio": "Happy coding and launching ideas to the space!",
         }
     )
 )
@@ -46,6 +56,11 @@ async def test_success(db_connection, username, result_data):
     assert user.data_source_id == result_data['data_source_id']
     assert followers_number == result_data['followers_number']
     assert followings_number == result_data['followings_number']
+    assert user.company == result_data['company']
+    assert user.blog == result_data['blog']
+    assert user.location == result_data['location']
+    assert user.email == result_data['email']
+    assert user.bio == result_data['bio']
 
 
 @mark.asyncio

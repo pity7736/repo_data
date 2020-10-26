@@ -9,8 +9,15 @@ from ..data_source.user_data import UserData
 async def _create_user_from_user_data(user_data: UserData) -> User:
     user, created = await User.get_or_create(
         username=user_data.username,
-        name=user_data.name,
-        data_source_id=user_data.data_source_id
+        data_source_id=user_data.data_source_id,
+        defaults={
+            'name': user_data.name,
+            'company': user_data.company,
+            'blog': user_data.blog,
+            'location': user_data.location,
+            'email': user_data.email,
+            'bio': user_data.bio,
+        }
     )
     return user
 

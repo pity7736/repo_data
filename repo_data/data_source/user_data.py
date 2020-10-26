@@ -1,10 +1,13 @@
-from collections import namedtuple
+from dataclasses import dataclass
 
-UserData = namedtuple(
-    'UserData',
-    [
-        'username',
-        'name',
-        'data_source_id'
-    ]
-)
+
+@dataclass
+class UserData:
+    username: str
+    data_source_id: str
+    name: str = None
+    company: str = None
+    blog: str = None
+    location: str = None
+    email: str = None
+    bio: str = None
