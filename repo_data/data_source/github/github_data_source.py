@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from typing import List
 
 from repo_data.data_source.user_data import UserData
@@ -6,6 +7,9 @@ from repo_data.exceptions import DataSourceError
 from .github_client import GithubClient
 from ..data_source import DataSource
 from ..repo_data import RepoData
+
+
+logger = logging.getLogger('repo_data')
 
 
 class GithubDataSource(DataSource):
@@ -16,6 +20,7 @@ class GithubDataSource(DataSource):
 
     async def get_user_followers_data(self) -> List[UserData]:
         followers_data = await self._client.get_user_followers(username=self._username)
+        logger.debug('followers data: %s', followers_data)
         if followers_data:
             tasks = []
             for follower_data in followers_data:
@@ -27,6 +32,7 @@ class GithubDataSource(DataSource):
         followings_data = await self._client.get_user_followings(
             username=self._username
         )
+        logger.debug('followings data: %s', followings_data)
         if followings_data:
             tasks = []
             for following_data in followings_data:
@@ -37,6 +43,7 @@ class GithubDataSource(DataSource):
     async def get_user_data(self, username=None) -> UserData:
         username = username or self._username
         user_data = await self._client.get_user(username=username)
+        logger.debug('username: %s. user data: %s', username, user_data)
         if user_data:
             return UserData(
                 username=username,
@@ -55,6 +62,7 @@ class GithubDataSource(DataSource):
             owner=self._username,
             name=name
         )
+        logger.debug('repo data: %s', repo_data)
         if repo_data:
             return RepoData(
                 name=name,

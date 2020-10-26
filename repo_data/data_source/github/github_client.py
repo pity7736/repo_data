@@ -1,6 +1,11 @@
+import logging
+
 import httpx
 
 from repo_data import settings
+
+
+logger = logging.getLogger('repo_data')
 
 
 class GithubClient:
@@ -26,6 +31,7 @@ class GithubClient:
         return self._send_request(f'/users/{username}/following')
 
     async def _send_request(self, resource):
+        logger.info('making request to resource: %s', resource)
         try:
             async with httpx.AsyncClient() as client:
                 response = await client.get(
@@ -33,7 +39,9 @@ class GithubClient:
                     headers=self._headers
                 )
         except httpx.RequestError:
+            logger.error('request error!')
             return {}
+        logger.debug('response status: %s', response.status_code)
         if response.status_code == 200:
             return response.json()
         return {}

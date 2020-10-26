@@ -1,9 +1,13 @@
+import logging
 from typing import Optional
 
 from repo_data.exceptions import DataSourceError
 from repo_data.models import User
 from ..data_source.data_source import DataSource
 from ..data_source.user_data import UserData
+
+
+logger = logging.getLogger('repo_data')
 
 
 async def _create_user_from_user_data(user_data: UserData) -> User:
@@ -19,6 +23,7 @@ async def _create_user_from_user_data(user_data: UserData) -> User:
             'bio': user_data.bio,
         }
     )
+    logger.debug('user: %s. created: %s', user, created)
     return user
 
 
@@ -34,6 +39,7 @@ class CreateUserFromDataSource:
         try:
             user_data = await self._data_source.get_user_data()
         except DataSourceError:
+            logger.error('error getting user data')
             return None
         else:
             user = await _create_user_from_user_data(user_data=user_data)
@@ -42,6 +48,7 @@ class CreateUserFromDataSource:
         return user
 
     async def _create_followers(self, user, create_followers):
+        logger.info('create followers: %s', create_followers)
         if create_followers is True:
             followers_data = await self._data_source.get_user_followers_data()
             followers = []
@@ -51,6 +58,7 @@ class CreateUserFromDataSource:
             await user.followers.add(*followers)
 
     async def _create_following(self, user, create_followings):
+        logger.info('create followings: %s', create_followings)
         if create_followings is True:
             followings_data = await self._data_source.get_user_followings_data()
             followings = []
