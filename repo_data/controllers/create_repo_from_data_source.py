@@ -28,7 +28,11 @@ class CreateRepoFromDataSource:
             return None
         return await Repository.create(
             name=repo_data.name,
-            owner=await self._get_owner()
+            owner=await self._get_owner(),
+            full_name=repo_data.full_name,
+            description=repo_data.description,
+            language=repo_data.language,
+            private=repo_data.private
         )
 
     async def _get_owner(self):

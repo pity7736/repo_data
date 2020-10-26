@@ -6,7 +6,7 @@ from starlette.routing import Route
 from tortoise.exceptions import FieldError
 
 from repo_data.models import User, Repository
-from tests.integration_tests.api.schemas import UserSchema
+from tests.integration_tests.api.schemas import UserSchema, RepoSchema
 
 
 async def get_user(request):
@@ -56,11 +56,7 @@ async def get_repo(request):
     repo_id = request.path_params['id']
     repo = await Repository.get_or_none(id=repo_id)
     if repo:
-        repo_data = {
-            'id': repo.id,
-            'name': repo.name,
-            'owner_url': f'/api/users/{repo.owner_id}'
-        }
+        repo_data = RepoSchema().dump(repo)
         return JSONResponse({'data': {'repo': repo_data}})
     return JSONResponse(
         {
@@ -88,14 +84,8 @@ async def search_repos(request):
         repos = []
 
     response = {}
-    repos_data = []
     status_code = 200
-    for repo in repos:
-        repos_data.append({
-            'id': repo.id,
-            'name': repo.name,
-            'owner_url': f'/api/users/{repo.owner_id}',
-        })
+    repos_data = RepoSchema().dump(repos, many=True)
     if not repos_data:
         status_code = 404
         errors.append({'message': 'repos not found'})
@@ -113,13 +103,7 @@ async def get_repos_by_owner(request):
     data['owner_id'] = owner_id
     repos = await Repository.filter(**data)
     status_code = 200 if repos else 404
-    repos_data = []
-    for repo in repos:
-        repos_data.append({
-            'id': repo.id,
-            'name': repo.name,
-            'owner_url': f'/api/users/{repo.owner_id}',
-        })
+    repos_data = RepoSchema().dump(repos, many=True)
     return JSONResponse({'data': {'repos': repos_data}}, status_code=status_code)
 
 

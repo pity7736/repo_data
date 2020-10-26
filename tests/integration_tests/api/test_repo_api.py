@@ -2,17 +2,25 @@ from repo_data.models import Repository
 from tests.factories import RepositoryFactory
 
 
+def repo_data(repo):
+    return {
+        'id': repo.id,
+        'name': repo.name,
+        'owner_url': f'/api/users/{repo.owner_id}',
+        'private': repo.private,
+        'full_name': repo.full_name,
+        'description': repo.description,
+        'language': repo.language
+    }
+
+
 def test_get_repo(repo_fixture: Repository, test_client):
     response = test_client.get(f'/api/repos/{repo_fixture.id}')
     data = response.json()
 
     assert response.status_code == 200
     assert data['data'] == {
-        'repo': {
-            'id': repo_fixture.id,
-            'name': repo_fixture.name,
-            'owner_url': f'/api/users/{repo_fixture.owner_id}'
-        }
+        'repo': repo_data(repo_fixture)
     }
 
 
@@ -39,11 +47,7 @@ def test_search_repos(test_client, repo_fixture: Repository, event_loop):
     assert response.status_code == 200
     assert data['data'] == {
         'repos': [
-            {
-                'id': repo_fixture.id,
-                'name': repo_fixture.name,
-                'owner_url': f'/api/users/{repo_fixture.owner_id}'
-            }
+            repo_data(repo_fixture)
         ]
     }
 
@@ -75,16 +79,8 @@ def test_get_all_repos(test_client, event_loop, repo_fixture: Repository):
     assert response.status_code == 200
     assert data['data'] == {
         'repos': [
-            {
-                'id': repo_fixture.id,
-                'name': repo_fixture.name,
-                'owner_url': f'/api/users/{repo_fixture.owner_id}'
-            },
-            {
-                'id': repo1.id,
-                'name': repo1.name,
-                'owner_url': f'/api/users/{repo1.owner_id}'
-            }
+            repo_data(repo_fixture),
+            repo_data(repo1)
         ]
     }
 
@@ -117,11 +113,7 @@ def test_get_repos_by_owner_id(test_client, repo_fixture: Repository):
     assert response.status_code == 200
     assert data['data'] == {
         'repos': [
-            {
-                'id': repo_fixture.id,
-                'name': repo_fixture.name,
-                'owner_url': f'/api/users/{repo_fixture.owner_id}'
-            }
+            repo_data(repo_fixture)
         ]
     }
 
@@ -150,11 +142,7 @@ def test_get_some_repos_by_owner(test_client, event_loop, repo_fixture: Reposito
     assert response.status_code == 200
     assert data['data'] == {
         'repos': [
-            {
-                'id': repo_fixture.id,
-                'name': repo_fixture.name,
-                'owner_url': f'/api/users/{repo_fixture.owner_id}'
-            }
+            repo_data(repo_fixture)
         ]
     }
 
@@ -176,10 +164,6 @@ def test_get_some_repos_by_owner_id(test_client, event_loop, repo_fixture: Repos
     assert response.status_code == 200
     assert data['data'] == {
         'repos': [
-            {
-                'id': repo_fixture.id,
-                'name': repo_fixture.name,
-                'owner_url': f'/api/users/{repo_fixture.owner_id}'
-            }
+            repo_data(repo_fixture)
         ]
     }

@@ -13,4 +13,10 @@ class UserSchema(Schema):
 
 
 class RepoSchema(Schema):
+    id = fields.Int()
     name = fields.Str()
+    full_name = fields.Str()
+    owner_url = fields.Function(lambda obj: f'/api/users/{obj.owner_id}')
+    private = fields.Bool()
+    description = fields.Str()
+    language = fields.Str()

@@ -60,7 +60,8 @@ class GithubDataSource(DataSource):
                 name=name,
                 full_name=repo_data['full_name'],
                 description=repo_data['description'],
-                private=repo_data['private']
+                private=repo_data['private'],
+                language=repo_data['language']
             )
 
         raise DataSourceError('There was a mistake getting data from github')

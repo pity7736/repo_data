@@ -27,8 +27,12 @@ class UserFactory(CreateFactoryMixin, Factory):
 
 
 class RepositoryFactory(CreateFactoryMixin, Factory):
-    name = 'nyiobo'
+    name = 'nyoibo'
     owner = SubFactory(UserFactory)
+    private = False
+    full_name = 'pity7736/nyoibo'
+    description = 'Create automatically attribute accessor in Python.'
+    language = 'Python'
 
     class Meta:
         model = Repository

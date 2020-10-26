@@ -7,6 +7,7 @@ RepoData = namedtuple(
         'name',
         'full_name',
         'description',
-        'private'
+        'private',
+        'language'
     ]
 )

@@ -12,6 +12,9 @@ async def test_create_repo_with_existent_user(user_fixture: User):
     repo = await Repository.get(name='nyoibo').prefetch_related('owner')
     assert repo.owner == user_fixture
     assert repo.name == 'nyoibo'
+    assert repo.private is False
+    assert repo.description == 'Create automatically attribute accessor in Python.'
+    assert repo.language == 'Python'
 
 
 @mark.asyncio
