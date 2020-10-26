@@ -41,7 +41,7 @@ def test_search_repos(test_client, repo_fixture: Repository, event_loop):
         owner=repo_fixture.owner,
         name='test'
     ))
-    response = test_client.get('/api/repos', json={'name': repo_fixture.name})
+    response = test_client.get('/api/repos', params={'name': repo_fixture.name})
     data = response.json()
 
     assert response.status_code == 200
@@ -53,7 +53,7 @@ def test_search_repos(test_client, repo_fixture: Repository, event_loop):
 
 
 def test_search_repo_without_results(test_client, db_connection):
-    response = test_client.get('/api/repos', json={'name': 'nyoibo'})
+    response = test_client.get('/api/repos', params={'name': 'nyoibo'})
     data = response.json()
 
     assert response.status_code == 404
@@ -88,7 +88,7 @@ def test_get_all_repos(test_client, event_loop, repo_fixture: Repository):
 def test_search_by_non_existent_field(test_client, event_loop, db_connection):
     response = test_client.get(
         '/api/repos',
-        json={'unknown_field': 'test'}
+        params={'unknown_field': 'test'}
     )
     data = response.json()
 
@@ -135,7 +135,7 @@ def test_get_some_repos_by_owner(test_client, event_loop, repo_fixture: Reposito
     ))
     response = test_client.get(
         f'/api/repos/owner/{repo_fixture.owner_id}',
-        json={'name': repo_fixture.name}
+        params={'name': repo_fixture.name}
     )
     data = response.json()
 
@@ -154,7 +154,7 @@ def test_get_some_repos_by_owner_id(test_client, event_loop, repo_fixture: Repos
     ))
     response = test_client.get(
         f'/api/repos/owner/{repo_fixture.owner_id}',
-        json={
+        params={
             'name': repo_fixture.name,
             'owner_id': repo_fixture.owner_id
         }

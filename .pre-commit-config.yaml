@@ -17,6 +17,6 @@ repos:
     hooks:
       - id: test
         name: tests
-        entry: run.sh tests
+        entry: run.sh tests_docker
         language: script
         types: [python]

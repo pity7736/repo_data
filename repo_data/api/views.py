@@ -30,7 +30,7 @@ async def get_user(request):
 async def search_users(request):
     errors = []
     try:
-        data = await request.json()
+        data = request.query_params
     except JSONDecodeError:
         data = {}
 
@@ -73,7 +73,7 @@ async def get_repo(request):
 async def search_repos(request):
     errors = []
     try:
-        data = await request.json()
+        data = request.query_params
     except JSONDecodeError:
         data = {}
     try:
@@ -97,7 +97,7 @@ async def search_repos(request):
 async def get_repos_by_owner(request):
     owner_id = request.path_params['id']
     try:
-        data = await request.json()
+        data = dict(request.query_params)
     except JSONDecodeError:
         data = {}
     data['owner_id'] = owner_id

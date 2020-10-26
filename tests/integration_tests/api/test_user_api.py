@@ -40,7 +40,7 @@ def test_search_users(test_client, event_loop, user_fixture):
     create_user = UserFactory.create(username='qwerty', name='qwerty')
     event_loop.run_until_complete(create_user)
 
-    response = test_client.get('/api/users', json={'username': user_fixture.username})
+    response = test_client.get('/api/users', params={'username': user_fixture.username})
     data = response.json()
 
     assert response.status_code == 200
@@ -55,8 +55,8 @@ def test_search_by_two_fields(test_client, event_loop, user_fixture):
     create_user = UserFactory.create(username='qwerty', name='qwerty')
     event_loop.run_until_complete(create_user)
 
-    response = test_client.get('/api/users', json={'username': user_fixture.username,
-                                                   'name': user_fixture.name})
+    response = test_client.get('/api/users', params={'username': user_fixture.username,
+                                                     'name': user_fixture.name})
     data = response.json()
 
     assert response.status_code == 200
@@ -68,7 +68,7 @@ def test_search_by_two_fields(test_client, event_loop, user_fixture):
 
 
 def test_search_users_without_results(test_client, db_connection):
-    response = test_client.get('/api/users', json={'username': 'pity7736'})
+    response = test_client.get('/api/users', params={'username': 'pity7736'})
     data = response.json()
 
     assert response.status_code == 404
@@ -107,7 +107,7 @@ def test_get_all_users(test_client, event_loop, db_connection):
 def test_search_by_non_existent_field(test_client, event_loop, user_fixture):
     response = test_client.get(
         '/api/users',
-        json={'unknown_field': user_fixture.username}
+        params={'unknown_field': user_fixture.username}
     )
     data = response.json()
 
@@ -125,7 +125,7 @@ def test_search_by_non_existent_field(test_client, event_loop, user_fixture):
 def test_search_by_non_existent_fields(test_client, event_loop, user_fixture):
     response = test_client.get(
         '/api/users',
-        json={
+        params={
             'unknown_field0': user_fixture.username,
             'unknown_field1': 'whatever'
         }
