@@ -3,12 +3,7 @@ from pytest import mark
 from repo_data.controllers import CreateUserFromDataSource
 from repo_data.data_source.github.github_data_source import GithubDataSource
 from repo_data.models import User
-
-
-# TODO:
-# create user when user already exists in DB
-# when user not exists in data source
-
+from tests.factories import UserFactory
 
 username_values = (
     (
@@ -51,3 +46,30 @@ async def test_success(db_connection, username, result_data):
     assert user.data_source_id == result_data['data_source_id']
     assert followers_number == result_data['followers_number']
     assert followings_number == result_data['followings_number']
+
+
+@mark.asyncio
+async def test_when_user_not_exists_in_data_source(db_connection):
+    username = 'non_existent_user'
+    data_source = GithubDataSource(username=username)
+    controller = CreateUserFromDataSource(data_source=data_source)
+    created_user = await controller.create()
+
+    user = await User.filter(username=username).first()
+
+    assert user is None
+    assert created_user is None
+
+
+@mark.asyncio
+async def test_create_user_when_user_already_exists_in_db(db_connection):
+    user_fixture = await UserFactory.create(data_source_id='4231101')
+    data_source = GithubDataSource(username=user_fixture.username)
+    controller = CreateUserFromDataSource(data_source=data_source)
+    created_user = await controller.create()
+
+    user = await User.get(username=user_fixture.username)
+    assert created_user == user
+    assert user.username == user_fixture.username
+    assert user.name == user_fixture.name
+    assert user.data_source_id == user_fixture.data_source_id
